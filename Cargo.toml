@@ -1,11 +1,11 @@
 [package]
 name = "oz-keystore"
 description = "A multi-chain keystore library that provides a unified interface for managing private keys."
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license-file = "LICENSE"
-homepage = "https://github.com/MCarlomagno/keystore"
-repository = "https://github.com/MCarlomagno/keystore"
+homepage = "https://github.com/OpenZeppelin/oz-keystore"
+repository = "https://github.com/OpenZeppelin/oz-keystore"
 readme = "README.md"
 keywords = ["keystore", "tool"]
 categories = ["development-tools"]
