@@ -25,6 +25,14 @@ path = "examples/local-keystore-to-alloy-wallet.rs"
 name = "local-keystore-to-stellar-wallet"
 path = "examples/local-keystore-to-stellar-wallet.rs"
 
+[[example]]
+name = "hashicorp-vault-to-alloy-wallet"
+path = "examples/hashicorp-vault-to-alloy-wallet.rs"
+
+[[example]]
+name = "hashicorp-vault-to-stellar-wallet"
+path = "examples/hashicorp-vault-to-stellar-wallet.rs"
+
 [workspace]
 members = [
     ".",
