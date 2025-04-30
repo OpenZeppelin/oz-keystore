@@ -1289,6 +1289,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "hashicorp-vault-any-secret"
+version = "0.1.0"
+dependencies = [
+ "oz-keystore",
+ "reqwest",
+ "tokio",
+]
+
+[[package]]
 name = "hashicorp-vault-to-alloy-wallet"
 version = "0.1.0"
 dependencies = [
