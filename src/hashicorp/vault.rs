@@ -49,6 +49,7 @@ pub enum KeyType {
     EVM,
     Stellar,
     Solana,
+    Any,
 }
 
 pub struct HashicorpVaultClient {
@@ -79,6 +80,7 @@ impl HashicorpVaultClient {
             KeyType::EVM => hex::encode(&key),
             KeyType::Stellar => PrivateKey::from_payload(&key).unwrap().to_string(),
             KeyType::Solana => bs58::encode(key).into_string(),
+            KeyType::Any => String::from_utf8(key).unwrap(),
         }
     }
 
@@ -87,6 +89,7 @@ impl HashicorpVaultClient {
             KeyType::EVM => hex::decode(&key).unwrap(),
             KeyType::Stellar => PrivateKey::from_string(&key).unwrap().0.to_vec(),
             KeyType::Solana => bs58::decode(key).into_vec().unwrap(),
+            KeyType::Any => key.into_bytes(),
         }
     }
 
