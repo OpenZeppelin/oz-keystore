@@ -48,8 +48,20 @@ impl HashicorpCloudClient {
         }
     }
 
+    pub fn with_client(&self, client: Client) -> Self {
+        Self {
+            client,
+            client_id: self.client_id.clone(),
+            client_secret: self.client_secret.clone(),
+            org_id: self.org_id.clone(),
+            project_id: self.project_id.clone(),
+            app_name: self.app_name.clone(),
+        }
+    }
+
     async fn get_token(&self) -> Result<String, Error> {
-        let token_response = self.client
+        let token_response = self
+            .client
             .post("https://auth.idp.hashicorp.com/oauth2/token")
             .form(&[
                 ("client_id", &self.client_id),

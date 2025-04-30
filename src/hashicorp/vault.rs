@@ -14,12 +14,12 @@ struct SecretRequest {
 
 #[derive(Deserialize, Debug)]
 struct SecretResponseData {
-  data: Option<SecretData>,
+    data: Option<SecretData>,
 }
 
 #[derive(Deserialize, Debug)]
 struct SecretResponse {
-  data: Option<SecretResponseData>,
+    data: Option<SecretResponseData>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -59,88 +59,100 @@ pub struct HashicorpVaultClient {
 
 impl HashicorpVaultClient {
     pub fn new(base_url: &str, token: &str) -> Self {
-      Self {
-        client: Client::new(),
-        base_url: base_url.to_string(),
-        token: token.to_string(),
-      }
+        Self {
+            client: Client::new(),
+            base_url: base_url.to_string(),
+            token: token.to_string(),
+        }
+    }
+
+    pub fn with_client(&self, client: Client) -> Self {
+        Self {
+            client,
+            base_url: self.base_url.clone(),
+            token: self.token.clone(),
+        }
     }
 
     fn encode_key(&self, key: Vec<u8>, key_type: KeyType) -> String {
-      match key_type {
-        KeyType::EVM => hex::encode(&key),
-        KeyType::Stellar => PrivateKey::from_payload(&key).unwrap().to_string(),
-        KeyType::Solana => bs58::encode(key).into_string(),
-      }
+        match key_type {
+            KeyType::EVM => hex::encode(&key),
+            KeyType::Stellar => PrivateKey::from_payload(&key).unwrap().to_string(),
+            KeyType::Solana => bs58::encode(key).into_string(),
+        }
     }
 
     fn decode_key(&self, key: String, key_type: KeyType) -> Vec<u8> {
-      match key_type {
-        KeyType::EVM => hex::decode(&key).unwrap(),
-        KeyType::Stellar => PrivateKey::from_string(&key).unwrap().0.to_vec(),
-        KeyType::Solana => bs58::decode(key).into_vec().unwrap(),
-      }
-    }
- 
-    pub fn new_with_client(base_url: &str, token: &str, client: reqwest::Client) -> Self {
-      Self {
-          base_url: base_url.to_string(),
-          token: token.to_string(),
-          client,
-      }
+        match key_type {
+            KeyType::EVM => hex::decode(&key).unwrap(),
+            KeyType::Stellar => PrivateKey::from_string(&key).unwrap().0.to_vec(),
+            KeyType::Solana => bs58::decode(key).into_vec().unwrap(),
+        }
     }
 
-    pub async fn store_secret(&self, id: &str, secret: Vec<u8>, key_type: KeyType) -> Result<(), Error> {
-      let url = format!("{}/v1/secret/data/{}", self.base_url, id);
+    pub async fn store_secret(
+        &self,
+        id: &str,
+        secret: Vec<u8>,
+        key_type: KeyType,
+    ) -> Result<(), Error> {
+        let url = format!("{}/v1/secret/data/{}", self.base_url, id);
 
-      let body = SecretRequest { 
-        data: SecretData { 
-          secret: self.encode_key(secret, key_type)
-        } 
-      };
-      
-      self.client.post(&url)
-        .header("X-Vault-Token", &self.token)
-        .json(&body)
-        .send()
-        .await?;
-      
-      Ok(())
+        let body = SecretRequest {
+            data: SecretData {
+                secret: self.encode_key(secret, key_type),
+            },
+        };
+
+        self.client
+            .post(&url)
+            .header("X-Vault-Token", &self.token)
+            .json(&body)
+            .send()
+            .await?;
+
+        Ok(())
     }
 
     pub async fn list_secrets(&self) -> Result<Vec<String>, Error> {
-      let url = format!("{}/v1/secret/metadata?list=true", self.base_url);
-      let response = self.client.get(&url) 
-        .header("X-Vault-Token", &self.token)
-        .send()
-        .await?
-        .json::<SecretListResponse>()
-        .await?;
-      
-      Ok(response.data.keys)
+        let url = format!("{}/v1/secret/metadata?list=true", self.base_url);
+        let response = self
+            .client
+            .get(&url)
+            .header("X-Vault-Token", &self.token)
+            .send()
+            .await?
+            .json::<SecretListResponse>()
+            .await?;
+
+        Ok(response.data.keys)
     }
 
     pub async fn get_secret(&self, id: &str, key_type: KeyType) -> Result<Option<Vec<u8>>, Error> {
-      let url = format!("{}/v1/secret/data/{}", self.base_url, id);
-      let response: SecretResponse = self.client.get(&url)
-        .header("X-Vault-Token", &self.token)
-        .send()
-        .await?
-        .json()
-        .await?;
-      
-        Ok(response.data
-          .and_then(|d| d.data)
-          .map(|d| self.decode_key(d.secret, key_type)))
+        let url = format!("{}/v1/secret/data/{}", self.base_url, id);
+        let response: SecretResponse = self
+            .client
+            .get(&url)
+            .header("X-Vault-Token", &self.token)
+            .send()
+            .await?
+            .json()
+            .await?;
+
+        Ok(response
+            .data
+            .and_then(|d| d.data)
+            .map(|d| self.decode_key(d.secret, key_type)))
     }
 
     pub async fn delete_secret(&self, id: &str) -> Result<(), Error> {
-      let url = format!("{}/v1/secret/data/{}", self.base_url, id);
-      self.client.delete(&url)
-        .header("X-Vault-Token", &self.token)
-        .send()
-        .await?;
-      
-      Ok(())
+        let url = format!("{}/v1/secret/data/{}", self.base_url, id);
+        self.client
+            .delete(&url)
+            .header("X-Vault-Token", &self.token)
+            .send()
+            .await?;
+
+        Ok(())
     }
 }
