@@ -28,6 +28,7 @@ Check the `examples/` directory for complete usage examples:
 - `hashicorp-vault-to-alloy-wallet`: Convert pk stored in vault to EVM wallet
 - `hashicorp-vault-to-stellar-wallet`: Convert pk stored in vault to Stellar wallet
 - `hashicorp-vault-to-solana-wallet`: Convert pk stored in vault to Solana wallet
+- `hashicorp-vault-any-secret`: Store and retrieve any secret in vault
 
 ## Local Keystore
 
