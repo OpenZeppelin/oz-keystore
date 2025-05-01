@@ -8,6 +8,8 @@ pub struct HashicorpCloudClient {
     org_id: String,
     project_id: String,
     app_name: String,
+    api_url: String,
+    auth_url: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -45,6 +47,8 @@ impl HashicorpCloudClient {
             org_id,
             project_id,
             app_name,
+            api_url: "https://api.cloud.hashicorp.com".to_string(),
+            auth_url: "https://auth.idp.hashicorp.com".to_string(),
         }
     }
 
@@ -56,13 +60,41 @@ impl HashicorpCloudClient {
             org_id: self.org_id.clone(),
             project_id: self.project_id.clone(),
             app_name: self.app_name.clone(),
+            api_url: self.api_url.clone(),
+            auth_url: self.auth_url.clone(),
+        }
+    }
+
+    pub fn with_auth_base_url(&self, auth_url: impl Into<String>) -> Self {
+        Self {
+            auth_url: auth_url.into(),
+            api_url: self.api_url.clone(),
+            client: self.client.clone(),
+            client_id: self.client_id.clone(),
+            client_secret: self.client_secret.clone(),
+            org_id: self.org_id.clone(),
+            project_id: self.project_id.clone(),
+            app_name: self.app_name.clone(),
+        }
+    }
+
+    pub fn with_api_base_url(&self, api_url: impl Into<String>) -> Self {
+        Self {
+            api_url: api_url.into(),
+            auth_url: self.auth_url.clone(),
+            client: self.client.clone(),
+            client_id: self.client_id.clone(),
+            client_secret: self.client_secret.clone(),
+            org_id: self.org_id.clone(),
+            project_id: self.project_id.clone(),
+            app_name: self.app_name.clone(),
         }
     }
 
     async fn get_token(&self) -> Result<String, Error> {
         let token_response = self
             .client
-            .post("https://auth.idp.hashicorp.com/oauth2/token")
+            .post(format!("{}/oauth2/token", self.auth_url))
             .form(&[
                 ("client_id", &self.client_id),
                 ("client_secret", &self.client_secret),
@@ -81,8 +113,8 @@ impl HashicorpCloudClient {
         let token = self.get_token().await?;
 
         let url = format!(
-            "https://api.cloud.hashicorp.com/secrets/2023-11-28/organizations/{}/projects/{}/apps/{}/secrets/{}:open",
-            self.org_id, self.project_id, self.app_name, secret_name
+            "{}/secrets/2023-11-28/organizations/{}/projects/{}/apps/{}/secrets/{}:open",
+            self.api_url, self.org_id, self.project_id, self.app_name, secret_name
         );
 
         self.client
