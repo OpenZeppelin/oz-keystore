@@ -78,9 +78,9 @@ impl HashicorpCloudClient {
         }
     }
 
-    pub fn with_api_base_url(&self, api_url: String) -> Self {
+    pub fn with_api_base_url(&self, api_url: impl Into<String>) -> Self {
         Self {
-            api_url,
+            api_url: api_url.into(),
             auth_url: self.auth_url.clone(),
             client: self.client.clone(),
             client_id: self.client_id.clone(),
