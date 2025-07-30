@@ -16,7 +16,7 @@ async fn main() {
     client
         .store_secret(
             "my_solana_secret",
-            keypair.secret().to_bytes().to_vec(),
+            keypair.secret_bytes().to_vec(),
             KeyType::Solana,
         )
         .await

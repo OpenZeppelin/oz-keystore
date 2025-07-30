@@ -9,7 +9,8 @@ alloy-network = "0.9"
 alloy-primitives = "0.8"
 alloy-signer = "0.9"
 alloy-signer-local = "0.9"
-tokio = { version = "1.0", features = ["full"] }
-reqwest = { version = "0.12.9", features = ["json"] }
-rand = "0.8"
-hex = "0.4"
+tokio = { workspace = true }
+reqwest = { workspace = true }
+rand = { workspace = true }
+hex = { workspace = true }
+

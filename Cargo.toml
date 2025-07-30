@@ -15,29 +15,18 @@ exclude = [".cargo_vcs_info.json"]
 name = "oz_keystore"
 path = "src/lib.rs"
 
-[[example]]
-name = "local-keystore-to-alloy-wallet"
-path = "examples/local-keystore-to-alloy-wallet.rs"
-
-[[example]]
-name = "local-keystore-to-stellar-wallet"
-path = "examples/local-keystore-to-stellar-wallet.rs"
-
-[[example]]
-name = "hashicorp-vault-to-alloy-wallet"
-path = "examples/hashicorp-vault-to-alloy-wallet.rs"
-
-[[example]]
-name = "hashicorp-vault-to-stellar-wallet"
-path = "examples/hashicorp-vault-to-stellar-wallet.rs"
-
 [workspace]
 members = [".", "examples/*"]
+
+[workspace.dependencies]
+reqwest = { version = "0.12.9", features = ["json"] }
+tokio = { version = "1.0", features = ["full"] }
+rand = "0.8.5"
+hex = "0.4"
 
 [dependencies]
 reqwest = { version = "0.12.9", features = ["json"] }
 tokio = { version = "1.0", features = ["full"] }
-dotenv = "0.15"
 eth-keystore = "0.5.0"
 base64 = "0.22"
 serde = { version = "1.0", features = ["derive"] }

@@ -5,8 +5,8 @@ edition = "2021"
 
 [dependencies]
 oz-keystore = { path = "../.." }
-tokio = { version = "1.0", features = ["full"] }
-reqwest = { version = "0.12.9", features = ["json"] }
-rand = "0.8"
+tokio = { workspace = true }
+reqwest = { workspace = true }
+rand = { workspace = true }
 solana-keypair = "2.2"
 solana-signer = "2.2"
