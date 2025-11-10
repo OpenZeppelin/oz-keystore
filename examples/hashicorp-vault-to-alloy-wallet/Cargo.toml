@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 oz-keystore = { path = "../.." }
-alloy-network = "0.9"
-alloy-primitives = "0.8"
-alloy-signer = "0.9"
-alloy-signer-local = "0.9"
+alloy-network = "1.0"
+alloy-primitives = "1.4"
+alloy-signer = "1.0"
+alloy-signer-local = "1.0"
 tokio = { workspace = true }
 reqwest = { workspace = true }
 rand = { workspace = true }

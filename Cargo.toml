@@ -19,24 +19,24 @@ path = "src/lib.rs"
 members = [".", "examples/*"]
 
 [workspace.dependencies]
-reqwest = { version = "0.12.9", features = ["json"] }
-tokio = { version = "1.0", features = ["full"] }
-rand = "0.8.5"
+reqwest = { version = "0.12", features = ["json"] }
+tokio = { version = "1.47", features = ["full"] }
+rand = "0.8"
 hex = "0.4"
 
 [dependencies]
-reqwest = { version = "0.12.9", features = ["json"] }
-tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.12", features = ["json"] }
+tokio = { version = "1.47", features = ["full"] }
 eth-keystore = "0.5.0"
 base64 = "0.22"
 serde = { version = "1.0", features = ["derive"] }
-rand = "0.8.5"
+rand = "0.8"
 
 # EVM
 hex = "0.4"
 
 # stellar
-stellar-strkey = "0.0.9"
+stellar-strkey = "0.0.13"
 
 # solana
 bs58 = "0.5.1"
