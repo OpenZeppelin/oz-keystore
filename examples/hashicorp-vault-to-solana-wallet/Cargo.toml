@@ -8,5 +8,5 @@ oz-keystore = { path = "../.." }
 tokio = { workspace = true }
 reqwest = { workspace = true }
 rand = { workspace = true }
-solana-keypair = "3.0.1"
+solana-keypair = "3.1.0"
 solana-signer = "3.0.0"
