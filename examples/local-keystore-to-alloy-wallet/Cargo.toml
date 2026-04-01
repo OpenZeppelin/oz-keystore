@@ -6,6 +6,6 @@ edition = "2021"
 [dependencies]
 oz-keystore = { path = "../.." }
 alloy-network = "1.0"
-alloy-primitives = "1.4"
+alloy-primitives = "1.5"
 alloy-signer = "1.0"
 alloy-signer-local = "1.0"
